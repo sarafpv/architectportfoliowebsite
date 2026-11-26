@@ -106,32 +106,48 @@ $('year').textContent = new Date().getFullYear();
 
 
 
+
 // Realistic portfolio flipbook
 
 function initFlipbook() {
-const status = $('bookstatus');
-if (!window.St || !window.St.PageFlip) {
-    status.textContent = 'PageFlip library could not load. Check your internet connection and refresh.';
-    return;
-}
-const flipbook = new St.PageFlip(
-    document.getElementById('flipbook'),
-    {
+
+    const status = document.getElementById('bookstatus');
+    const container = document.getElementById('flipbook');
+    const reader = document.getElementById('reader');
+    const stage = document.getElementById('bookstage');
+
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const counter = document.getElementById('counter');
+    const jump = document.getElementById('jump');
+    const zoom = document.getElementById('zoom');
+    const full = document.getElementById('full');
+
+    if (!window.St || !window.St.PageFlip) {
+        if (status) {
+            status.hidden = false;
+            status.textContent = 'Flipbook library failed to load.';
+        }
+        return;
+    }
+
+    const book = new window.St.PageFlip(container, {
+
         width: 1000,
         height: 707,
 
         size: 'stretch',
 
         minWidth: 250,
-        maxWidth: 1400,
+        maxWidth: 1200,
 
         minHeight: 175,
-        maxHeight: 1000,
+        maxHeight: 850,
 
         drawShadow: true,
         maxShadowOpacity: 0.45,
 
-        flippingTime: 1000,
+        flippingTime: 900,
 
         showCover: true,
         usePortrait: true,
@@ -140,129 +156,172 @@ const flipbook = new St.PageFlip(
         mobileScrollSupport: true,
         swipeDistance: 30,
 
-        clickEventForward: true,
         useMouseEvents: true,
         showPageCorners: true,
-
         disableFlipByClick: false
-    }
-);
+    });
 
-// Load all portfolio pages
+    window.portfolioFlipbook = book;
 
-const pageImages = Array.from(
-    { length: portfolio.pages },
-    (_, i) =>
-        'assets/page-' +
-        String(i + 1).padStart(2, '0') +
-        '.webp'
-);
-
-flipbook.loadFromImages(pageImages);
-status.hidden = true;
-
-// Update page counter
-
-function updatePageCounter() {
-
-    const current = flipbook.getCurrentPageIndex() + 1;
-    const total = flipbook.getPageCount();
-
-    document.getElementById('counter').textContent =
-        current + ' / ' + total;
-
-    document.getElementById('jump').value = current;
-
-    document.getElementById('prev').disabled =
-        current === 1;
-
-    document.getElementById('next').disabled =
-        current === total;
-}
-
-flipbook.on('flip', updatePageCounter);
-flipbook.on('changeOrientation', updatePageCounter);
-
-// Previous page
-
-document.getElementById('prev').onclick = () => {
-    flipbook.flipPrev();
-};
-
-// Next page
-
-document.getElementById('next').onclick = () => {
-    flipbook.flipNext();
-};
-
-// Jump to specific page
-
-const jumpInput = document.getElementById('jump');
-
-jumpInput.max = portfolio.pages;
-
-jumpInput.onchange = () => {
-
-    const page = Math.max(
-        1,
-        Math.min(
-            portfolio.pages,
-            Math.floor(Number(jumpInput.value) || 1)
-        )
+    const images = Array.from(
+        { length: portfolio.pages },
+        (_, i) => asset(i + 1)
     );
 
-    flipbook.turnToPage(page - 1);
-};
+    function updateCounter() {
 
-// Zoom controls
+        const current = book.getCurrentPageIndex() + 1;
+        const total = book.getPageCount();
 
-const bookstage = document.getElementById('bookstage');
+        counter.textContent = current + ' / ' + total;
 
-document.getElementById('zoom').onclick = () => {
+        jump.value = current;
+        jump.max = total;
 
-    bookstage.classList.toggle('zoomed');
-
-    const zoomed = bookstage.classList.contains('zoomed');
-
-    document.getElementById('zoom').textContent =
-        zoomed ? 'Reset zoom' : 'Zoom';
-};
-
-// Fullscreen controls
-
-document.getElementById('full').onclick = async () => {
-
-    try {
-
-        if (document.fullscreenElement) {
-            await document.exitFullscreen();
-        } else {
-            await document.getElementById('reader')
-                .requestFullscreen();
-        }
-
-    } catch (error) {
-        console.error('Fullscreen unavailable:', error);
+        prev.disabled = current <= 1;
+        next.disabled = current >= total;
     }
-};
 
-// Keyboard navigation
+    // Register events before loading pages
 
-document.getElementById('reader')
-    .addEventListener('keydown', event => {
+    book.on('init', () => {
+        if (status) status.hidden = true;
+        updateCounter();
+    });
+
+    book.on('flip', event => {
+
+        const current = Number(event.data) + 1;
+
+        counter.textContent =
+            current + ' / ' + book.getPageCount();
+
+        jump.value = current;
+
+        updateCounter();
+    });
+
+    book.on('changeState', event => {
+        if (event.data === 'read') {
+            updateCounter();
+        }
+    });
+
+    book.on('changeOrientation', () => {
+        updateCounter();
+    });
+
+    book.loadFromImages(images);
+
+    // Previous page
+
+    prev.addEventListener('click', event => {
+        event.preventDefault();
+        book.flipPrev('bottom');
+    });
+
+    // Next page
+
+    next.addEventListener('click', event => {
+        event.preventDefault();
+        book.flipNext('bottom');
+    });
+
+    // Jump to page
+
+    function goToPage() {
+
+        const page = Math.max(
+            1,
+            Math.min(
+                book.getPageCount(),
+                Math.floor(Number(jump.value) || 1)
+            )
+        );
+
+        book.turnToPage(page - 1);
+        updateCounter();
+    }
+
+    jump.addEventListener('change', goToPage);
+
+    jump.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            goToPage();
+        }
+    });
+
+    // Zoom
+
+    zoom.addEventListener('click', () => {
+
+        stage.classList.toggle('zoomed');
+
+        zoom.textContent =
+            stage.classList.contains('zoomed')
+                ? 'Reset zoom'
+                : 'Zoom';
+    });
+
+    // Fullscreen
+
+    full.addEventListener('click', async () => {
+
+        try {
+
+            if (document.fullscreenElement) {
+                await document.exitFullscreen();
+            } else {
+                await reader.requestFullscreen();
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+
+        full.textContent = document.fullscreenElement
+            ? 'Exit full screen'
+            : 'Full screen';
+
+        requestAnimationFrame(() => book.update());
+    });
+
+    // Keyboard navigation
+
+    reader.tabIndex = 0;
+
+    reader.addEventListener('keydown', event => {
 
         if (event.target.tagName === 'INPUT') return;
 
         if (event.key === 'ArrowRight') {
-            flipbook.flipNext();
+            event.preventDefault();
+            book.flipNext();
         }
 
         if (event.key === 'ArrowLeft') {
-            flipbook.flipPrev();
+            event.preventDefault();
+            book.flipPrev();
         }
     });
 
-updatePageCounter();
-
+    updateCounter();
 }
-try { initFlipbook(); } catch (error) { console.error(error); $("bookstatus").hidden = false; $("bookstatus").textContent = "Flipbook initialization failed: " + error.message; }
+
+try {
+    initFlipbook();
+} catch (error) {
+
+    console.error('Flipbook error:', error);
+
+    const status = document.getElementById('bookstatus');
+
+    if (status) {
+        status.hidden = false;
+        status.textContent = error.message;
+    }
+}
