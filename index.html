@@ -9,6 +9,13 @@
     <meta name="author" content="Ved Agrawal">
     <meta name="robots" content="index, follow">
 
+    <link rel="stylesheet" href="style.css">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
+    <script defer src="content.js"></script>
+    <script defer src="app.js"></script>
+
     <title>Ved Agrawal | Architecture Portfolio</title>
 
     <link rel="stylesheet" href="style.css">
@@ -101,44 +108,57 @@
         <div id="projects" class="projects"></div>
     </section>
 
-    <section id="book">
-        <div class="section-head">
-            <p class="eyebrow">02 / THE COLLECTION</p>
+    
+<section id="book">
 
-            <h2>Turn the page.</h2>
+    <div class="section-head">
+        <p class="eyebrow">02 / THE COLLECTION</p>
+        <h2>Turn the page.</h2>
+        <p>Explore the original portfolio, from concept to detail.</p>
+    </div>
 
-            <p>
-                Explore the original portfolio, from concept to detail.
-            </p>
+    <div class="reader" id="reader">
+
+        <div class="bookstage" id="bookstage">
+            <div id="flipbook"></div>
         </div>
 
-        <div class="heyzine-container">
-            <iframe
-                src="https://heyzine.com/flip-book/5117474555.html"
-                title="Ved Agrawal Architecture Portfolio"
-                allow="fullscreen"
-                allowfullscreen
-                loading="lazy">
-            </iframe>
-        </div>
+        <div class="controls">
 
-        <div class="portfolio-actions">
+            <button id="prev" aria-label="Previous page">
+                ←
+            </button>
 
-            <a class="button"
-                href="https://heyzine.com/flip-book/5117474555.html"
-                target="_blank"
-                rel="noopener noreferrer">
-                    Open Full Flipbook ↗
-            </a>
+            <span id="counter">1 / 23</span>
 
-            <a class="button"
-               href="assets/portfolio.pdf"
-               download>
-                Download Portfolio ↓
-            </a>
+            <button id="next" aria-label="Next page">
+                →
+            </button>
+
+            <button id="zoom">Zoom</button>
+
+            <button id="full">Full screen</button>
 
         </div>
-    </section>
+
+        <label class="jump">
+            Go to page
+            <input id="jump" type="number"
+                   min="1" max="23" value="1">
+        </label>
+
+    </div>
+
+    <div class="portfolio-actions">
+        <a class="button"
+           href="assets/portfolio.pdf"
+           download>
+            Download Portfolio ↓
+        </a>
+    </div>
+
+</section>
+
 
     <section id="about">
         <div class="section-head">

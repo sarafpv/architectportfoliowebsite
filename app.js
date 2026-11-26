@@ -103,3 +103,156 @@ $('email').href = 'mailto:' + portfolio.email;
 // Automatic copyright year
 
 $('year').textContent = new Date().getFullYear();
+
+
+
+// Realistic portfolio flipbook
+
+const flipbook = new St.PageFlip(
+    document.getElementById('flipbook'),
+    {
+        width: 1000,
+        height: 707,
+
+        size: 'stretch',
+
+        minWidth: 250,
+        maxWidth: 1400,
+
+        minHeight: 175,
+        maxHeight: 1000,
+
+        drawShadow: true,
+        maxShadowOpacity: 0.45,
+
+        flippingTime: 1000,
+
+        showCover: true,
+        usePortrait: true,
+        autoSize: true,
+
+        mobileScrollSupport: true,
+        swipeDistance: 30,
+
+        clickEventForward: true,
+        useMouseEvents: true,
+        showPageCorners: true,
+
+        disableFlipByClick: false
+    }
+);
+
+// Load all portfolio pages
+
+const pageImages = Array.from(
+    { length: portfolio.pages },
+    (_, i) =>
+        'assets/page-' +
+        String(i + 1).padStart(2, '0') +
+        '.webp'
+);
+
+flipbook.loadFromImages(pageImages);
+
+// Update page counter
+
+function updatePageCounter() {
+
+    const current = flipbook.getCurrentPageIndex() + 1;
+    const total = flipbook.getPageCount();
+
+    document.getElementById('counter').textContent =
+        current + ' / ' + total;
+
+    document.getElementById('jump').value = current;
+
+    document.getElementById('prev').disabled =
+        current === 1;
+
+    document.getElementById('next').disabled =
+        current === total;
+}
+
+flipbook.on('flip', updatePageCounter);
+flipbook.on('changeOrientation', updatePageCounter);
+
+// Previous page
+
+document.getElementById('prev').onclick = () => {
+    flipbook.flipPrev();
+};
+
+// Next page
+
+document.getElementById('next').onclick = () => {
+    flipbook.flipNext();
+};
+
+// Jump to specific page
+
+const jumpInput = document.getElementById('jump');
+
+jumpInput.max = portfolio.pages;
+
+jumpInput.onchange = () => {
+
+    const page = Math.max(
+        1,
+        Math.min(
+            portfolio.pages,
+            Math.floor(Number(jumpInput.value) || 1)
+        )
+    );
+
+    flipbook.flip(page - 1);
+};
+
+// Zoom controls
+
+const bookstage = document.getElementById('bookstage');
+
+document.getElementById('zoom').onclick = () => {
+
+    bookstage.classList.toggle('zoomed');
+
+    const zoomed = bookstage.classList.contains('zoomed');
+
+    document.getElementById('zoom').textContent =
+        zoomed ? 'Reset zoom' : 'Zoom';
+};
+
+// Fullscreen controls
+
+document.getElementById('full').onclick = async () => {
+
+    try {
+
+        if (document.fullscreenElement) {
+            await document.exitFullscreen();
+        } else {
+            await document.getElementById('reader')
+                .requestFullscreen();
+        }
+
+    } catch (error) {
+        console.error('Fullscreen unavailable:', error);
+    }
+};
+
+// Keyboard navigation
+
+document.getElementById('reader')
+    .addEventListener('keydown', event => {
+
+        if (event.target.tagName === 'INPUT') return;
+
+        if (event.key === 'ArrowRight') {
+            flipbook.flipNext();
+        }
+
+        if (event.key === 'ArrowLeft') {
+            flipbook.flipPrev();
+        }
+    });
+
+updatePageCounter();
