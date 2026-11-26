@@ -108,6 +108,12 @@ $('year').textContent = new Date().getFullYear();
 
 // Realistic portfolio flipbook
 
+function initFlipbook() {
+const status = $('bookstatus');
+if (!window.St || !window.St.PageFlip) {
+    status.textContent = 'PageFlip library could not load. Check your internet connection and refresh.';
+    return;
+}
 const flipbook = new St.PageFlip(
     document.getElementById('flipbook'),
     {
@@ -153,6 +159,7 @@ const pageImages = Array.from(
 );
 
 flipbook.loadFromImages(pageImages);
+status.hidden = true;
 
 // Update page counter
 
@@ -204,7 +211,7 @@ jumpInput.onchange = () => {
         )
     );
 
-    flipbook.flip(page - 1);
+    flipbook.turnToPage(page - 1);
 };
 
 // Zoom controls
@@ -256,3 +263,6 @@ document.getElementById('reader')
     });
 
 updatePageCounter();
+
+}
+try { initFlipbook(); } catch (error) { console.error(error); $("bookstatus").hidden = false; $("bookstatus").textContent = "Flipbook initialization failed: " + error.message; }
