@@ -1,1 +1,204 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Ved Agrawal — selected architectural works 2023–2026"><title>Ved Agrawal | Architecture Portfolio</title><link rel="stylesheet" href="style.css"><script defer src="content.js"></script><script defer src="app.js"></script></head><body><header><a class="brand" href="#home">VA<span> / </span>VED AGRAWAL</a><nav><a href="#work">Works</a><a href="#book">Flipbook</a><a href="#about">About</a><a href="#contact">Contact</a></nav></header><main><section id="home" class="hero"><div class="hero-copy"><p class="eyebrow">ARCHITECTURE / SELECTED WORKS 2023–2026</p><h1>Spaces for<br><em>human life.</em></h1><p>Exploring material, context and the relationship between people and nature.</p><a class="button" href="#work">Explore selected works ↗</a></div><img src="assets/basera.webp" alt="Basera residential housing architectural render"><span class="hero-caption">01 / BASERA — IIM NAGPUR</span></section><section id="work"><div class="section-head"><p class="eyebrow">01 / PORTFOLIO</p><h2>Selected works.</h2></div><div id="projects" class="projects"></div></section><section id="book"><div class="section-head"><p class="eyebrow">02 / THE COLLECTION</p><h2>Turn the page.</h2><p>Explore the original portfolio, from concept to detail.</p></div><div class="reader" id="reader"><div class="bookstage" id="bookstage"><img id="left" alt="Portfolio page"><img id="right" alt="Portfolio page"></div><div class="controls"><button id="prev" aria-label="Previous pages">←</button><span id="counter" aria-live="polite"></span><button id="next" aria-label="Next pages">→</button><button id="zoom">Zoom</button><button id="full">Full screen</button></div><label class="jump">Go to page <input id="jump" type="number" min="1" max="23" value="1"></label></div></section><section id="about"><div class="section-head"><p class="eyebrow">03 / PROFILE</p><h2>About.</h2></div><div class="about-grid"><img src="assets/portrait.webp" alt="Portfolio profile photograph"><div><h3 id="person"></h3><p id="bio"></p><p id="education"></p><p class="eyebrow">TOOLS & SKILLS</p><p id="skills"></p><p class="eyebrow">COMPETITIONS & WORKSHOPS</p><p id="activities"></p></div></div></section><section id="contact"><p class="eyebrow">04 / CONTACT</p><h2>Let's connect.</h2><p>For internships, collaborations and design conversations.</p><a id="email" class="button"></a></section></main><footer>© <span id="year"></span> Ved Agrawal <a href="#home">Back to top ↑</a></footer><dialog id="detail"><button class="close" aria-label="Close">×</button><div id="detailbody"></div></dialog><dialog id="viewer"><button class="close" aria-label="Close">×</button><img id="large" alt="Enlarged portfolio drawing"></dialog></body></html>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <meta name="description" content="Ved Agrawal — selected architectural works 2023–2026">
+    <meta name="author" content="Ved Agrawal">
+    <meta name="robots" content="index, follow">
+
+    <title>Ved Agrawal | Architecture Portfolio</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script defer src="content.js"></script>
+    <script defer src="app.js"></script>
+
+    <style>
+        .heyzine-container {
+            width: 100%;
+            overflow: hidden;
+            background: #eee9df;
+            border-radius: 4px;
+        }
+
+        .heyzine-container iframe {
+            display: block;
+            width: 100%;
+            height: 80vh;
+            min-height: 500px;
+            border: none;
+        }
+
+        .portfolio-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .heyzine-container iframe {
+                height: 65vh;
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a class="brand" href="#home">
+        VA<span> / </span>VED AGRAWAL
+    </a>
+
+    <nav>
+        <a href="#work">Works</a>
+        <a href="#book">Flipbook</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<main>
+
+    <section id="home" class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">
+                ARCHITECTURE / SELECTED WORKS 2023–2026
+            </p>
+
+            <h1>Spaces for<br><em>human life.</em></h1>
+
+            <p>
+                Exploring material, context and the relationship
+                between people and nature.
+            </p>
+
+            <a class="button" href="#work">
+                Explore selected works ↗
+            </a>
+        </div>
+
+        <img src="assets/basera.webp"
+             alt="Basera residential housing architectural render">
+
+        <span class="hero-caption">
+            01 / BASERA — IIM NAGPUR
+        </span>
+    </section>
+
+    <section id="work">
+        <div class="section-head">
+            <p class="eyebrow">01 / PORTFOLIO</p>
+            <h2>Selected works.</h2>
+        </div>
+
+        <div id="projects" class="projects"></div>
+    </section>
+
+    <section id="book">
+        <div class="section-head">
+            <p class="eyebrow">02 / THE COLLECTION</p>
+
+            <h2>Turn the page.</h2>
+
+            <p>
+                Explore the original portfolio, from concept to detail.
+            </p>
+        </div>
+
+        <div class="heyzine-container">
+            <iframe
+                src="https://heyzine.com/flip-book/5117474555.html"
+                title="Ved Agrawal Architecture Portfolio"
+                allow="fullscreen"
+                allowfullscreen
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <div class="portfolio-actions">
+
+            <a class="button"
+                href="https://heyzine.com/flip-book/5117474555.html"
+                target="_blank"
+                rel="noopener noreferrer">
+                    Open Full Flipbook ↗
+            </a>
+
+            <a class="button"
+               href="assets/portfolio.pdf"
+               download>
+                Download Portfolio ↓
+            </a>
+
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-head">
+            <p class="eyebrow">03 / PROFILE</p>
+            <h2>About.</h2>
+        </div>
+
+        <div class="about-grid">
+
+            <img src="assets/portrait.webp"
+                 alt="Portfolio profile photograph">
+
+            <div>
+                <h3 id="person"></h3>
+
+                <p id="bio"></p>
+                <p id="education"></p>
+
+                <p class="eyebrow">TOOLS & SKILLS</p>
+                <p id="skills"></p>
+
+                <p class="eyebrow">
+                    COMPETITIONS & WORKSHOPS
+                </p>
+
+                <p id="activities"></p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contact">
+        <p class="eyebrow">04 / CONTACT</p>
+
+        <h2>Let's connect.</h2>
+
+        <p>
+            For internships, collaborations and design conversations.
+        </p>
+
+        <a id="email" class="button"></a>
+    </section>
+
+</main>
+
+<footer>
+    © <span id="year"></span> Ved Agrawal
+
+    <a href="#home">Back to top ↑</a>
+</footer>
+
+<dialog id="detail">
+    <button class="close" aria-label="Close">×</button>
+    <div id="detailbody"></div>
+</dialog>
+
+<dialog id="viewer">
+    <button class="close" aria-label="Close">×</button>
+    <img id="large" alt="Enlarged portfolio drawing">
+</dialog>
+
+</body>
+</html>
